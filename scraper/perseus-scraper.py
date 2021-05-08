@@ -8,8 +8,8 @@ import logging
 
 class Perseus():
     def __init__(self):
-        perseusAPI = https://scaife.perseus.org/library/
-        greekMarker = 'urn:cts:greekLit:'
+        self.__perseusAPI = https://scaife.perseus.org/library/
+        self.__greekMarker = 'urn:cts:greekLit:'
 
 
 
