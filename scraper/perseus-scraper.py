@@ -20,6 +20,8 @@ class Perseus():
     urn_passages = []
     invalid_texts = []
     data = []
+    urn_file = 'urn.txt'
+    urn_fragment_file = 'urn_fragmentos.txt'
 
     # Al llamar a este método, se recopilan todos los códigos URN correspondientes a textos en griego
     def get_urns(self):
@@ -72,6 +74,23 @@ class Perseus():
                 self.data.append(data_dic)
             except AttributeError:
                 logging.debug('AttributeError para {}'.format(urn))
+
+    def write_data(self, data, file_container):
+        with open(file_container, 'w') as f:
+            f.write('\n'.join(data))
+            data = []
+
+    def read_data(self, file_toread):
+        if file_toread == urn_file:
+            with open(file_toread, 'r') as f:
+                list_data = f.read().split('\n')
+                logging.debug('Resultado de leer {} = {}'.format(file_toread, list_data))
+                self.urn_codes = list_data
+        elif file_toread == urn_fragment_file:
+            with open(file_toread, 'r') as f:
+                list_data = f.read().split('\n')
+                logging.debug('Resultado de leer {} = {}'.format(file_toread, list_data))
+                self.urn_passages = list_data
 
 
 if __name__ == "__main__":
