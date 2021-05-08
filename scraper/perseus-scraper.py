@@ -93,16 +93,40 @@ class Perseus():
                 self.urn_passages = list_data
 
 
-if __name__ == "__main__":
-    
+
+def main():
     # Configuración de modo DEBUG por parámetro
     logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s- %(message)s')
-    
     if not 'DEBUG' in sys.argv:
         logging.disable(logging.DEBUG)
     logging.debug('Inicio del programa')
 
     perseusScrap = Perseus()
-    perseusScrap.get_urns()
-    perseusScrap.get_passages_urn()
-    perseusScrap.get_text()
+
+    if '-rT' in sys.argv:
+        perseusScrap.read_data(perseusScrap.urn_file)
+    else:
+        perseusScrap.get_urns()
+
+    if '-wT' in sys.argv:
+        perseusScrap.write_data(perseusScrap.urn_codes, perseusScrap.urn_file)
+
+    if '-rF' in sys.argv:
+        perseusScrap.read_data(perseusScrap.urn_fragment_file)
+    else:
+        perseusScrap.get_passages_urn()
+
+    if '-wF' in sys.argv:
+        perseusScrap.write_data(perseusScrap.urn_passages, perseusScrap.urn_fragment_file)
+
+    if '-t' in sys.argv:
+        perseusScrap.get_text()
+
+    if len(sys.argv)==1:
+        perseusScrap.get_urns()
+        perseusScrap.get_passage_urn()
+        perseusScrap.get_text()
+
+
+if __name__ =='__main__':
+    main()
