@@ -6,6 +6,12 @@ import bs4
 import requests
 import logging
 
+class Perseus():
+    def __init__(self):
+        perseusAPI = https://scaife.perseus.org/library/
+        greekMarker = 'urn:cts:greekLit:'
+
+
 
 if __name__ == "__main__":
     
