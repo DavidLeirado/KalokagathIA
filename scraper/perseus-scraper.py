@@ -13,11 +13,13 @@ class Perseus():
     def __init__(self):
         self.__perseusAPI_capabilities = 'http://www.perseus.tufts.edu/hopper/CTS?request=GetCapabilities'
         self.__perseusAPI_passages = 'http://www.perseus.tufts.edu/hopper/CTS?request=GetValidReff&urn='
+        self.__perseusAPI_text = 'http://www.perseus.tufts.edu/hopper/CTS?request=GetPassage&urn='
         self.__greekMarker = 'greekLit:'
 
     urn_codes = []
     urn_passages = []
     invalid_texts = []
+    data = []
 
     # Al llamar a este método, se recopilan todos los códigos URN correspondientes a textos en griego
     def get_urns(self):
@@ -48,6 +50,28 @@ class Perseus():
         logging.debug('La cantidad de pasajes scrapeables es de: '+str(len(self.urn_passages)))
         logging.debug('La cantidad total de textos inaccesibles es: {} de {}'.format(str(len(self.invalid_texts)), str(len(self.urn_codes))))
 
+    # Este método extrae el fragmento, autor y obra de las URN viables
+    def get_text(self):
+        for urn in self.urn_passages:
+            try:
+                persAPItext_req = requests.get(self.__perseusAPI_text+urn)
+                persAPItext_parser = bs4.BeautifulSoup(persAPItext_req.text, 'xml')
+    
+                data_dic = {'Autor':'',
+                            'Obra':'',
+                            'Fragmento':'',
+                            'Texto':''
+                        }
+                data_dic['Autor'] = persAPItext_parser.find('cts:groupname').get_text()
+                data_dic['Obra'] = persAPItext_parser.find('cts:title').get_text()
+                data_dic['Fragmento'] = persAPItext_parser.find('cts:psg').get_text()
+                data_dic['Texto'] = persAPItext_parser.find('tei:body').get_text().strip()
+                logging.debug('El autor scrapeado es: {}'.format(data_dic['Autor']))
+                logging.debug('La obra scrapeada es: {}'.format(data_dic['Obra']))
+                logging.debug('El texto scrapeado es: '+data_dic['Texto'])
+                self.data.append(data_dic)
+            except AttributeError:
+                logging.debug('AttributeError para {}'.format(urn))
 
 
 if __name__ == "__main__":
@@ -62,3 +86,4 @@ if __name__ == "__main__":
     perseusScrap = Perseus()
     perseusScrap.get_urns()
     perseusScrap.get_passages_urn()
+    perseusScrap.get_text()
