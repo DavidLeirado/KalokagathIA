@@ -54,26 +54,22 @@ class Perseus():
 
     # Este método extrae el fragmento, autor y obra de las URN viables
     def get_text(self):
-        for urn in self.urn_passages:
-            try:
-                persAPItext_req = requests.get(self.__perseusAPI_text+urn)
-                persAPItext_parser = bs4.BeautifulSoup(persAPItext_req.text, 'xml')
+        with open('textos_griegos.csv', 'w') as f:
+            f.write('Autor,Obra,Fragmento,Texto\n')
+            for urn in self.urn_passages:
+                try:
+                    persAPItext_req = requests.get(self.__perseusAPI_text+urn)
+                    persAPItext_parser = bs4.BeautifulSoup(persAPItext_req.text, 'xml')
     
-                data_dic = {'Autor':'',
-                            'Obra':'',
-                            'Fragmento':'',
-                            'Texto':''
-                        }
-                data_dic['Autor'] = persAPItext_parser.find('cts:groupname').get_text()
-                data_dic['Obra'] = persAPItext_parser.find('cts:title').get_text()
-                data_dic['Fragmento'] = persAPItext_parser.find('cts:psg').get_text()
-                data_dic['Texto'] = persAPItext_parser.find('tei:body').get_text().strip()
-                logging.debug('El autor scrapeado es: {}'.format(data_dic['Autor']))
-                logging.debug('La obra scrapeada es: {}'.format(data_dic['Obra']))
-                logging.debug('El texto scrapeado es: '+data_dic['Texto'])
-                self.data.append(data_dic)
-            except AttributeError:
-                logging.debug('AttributeError para {}'.format(urn))
+                    autor = persAPItext_parser.find('cts:groupname').get_text().strip()
+                    obra = persAPItext_parser.find('cts:title').get_text().strip()
+                    fragmento = persAPItext_parser.find('cts:psg').get_text().strip()
+                    texto = persAPItext_parser.find('tei:body').get_text().replace('\n', ' ').replace('  ', ' ').replace("\"", "").strip().replace('.', '..').replace(',','.')
+                    line = "\"{}\",\"{}\",\"{}\",\"{}\"\n".format(autor, obra, fragmento, texto)                         
+                    print(line)
+                    f.write(line)
+                except AttributeError:
+                    logging.debug('AttributeError para {}'.format(urn))
 
     def write_data(self, data, file_container):
         with open(file_container, 'w') as f:
@@ -81,12 +77,12 @@ class Perseus():
             data = []
 
     def read_data(self, file_toread):
-        if file_toread == urn_file:
+        if file_toread == self.urn_file:
             with open(file_toread, 'r') as f:
                 list_data = f.read().split('\n')
                 logging.debug('Resultado de leer {} = {}'.format(file_toread, list_data))
                 self.urn_codes = list_data
-        elif file_toread == urn_fragment_file:
+        elif file_toread == self.urn_fragment_file:
             with open(file_toread, 'r') as f:
                 list_data = f.read().split('\n')
                 logging.debug('Resultado de leer {} = {}'.format(file_toread, list_data))
