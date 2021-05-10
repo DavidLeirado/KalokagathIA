@@ -24,6 +24,8 @@ class Perseus():
     urn_scraped = []
     urn_file = 'urn.txt'
     urn_fragment_file = 'urn_fragmentos.txt'
+    urn_nonvalid_texts = 'urn_textos_no_disponibles.txt'
+    actualizaciones = 'actualizaciones.txt'
 
     # Al llamar a este método, se recopilan todos los códigos URN correspondientes a textos en griego
     def __get_urns(self):
@@ -77,19 +79,12 @@ class Perseus():
     def __write_data(self, data, file_container):
         with open(file_container, 'w') as f:
             f.write('\n'.join(data))
-            data = []
 
-    def __read_data(self, file_toread):
-        if file_toread == self.urn_file:
-            with open(file_toread, 'r') as f:
-                list_data = f.read().split('\n')
-                logging.debug('Resultado de leer {} = {}'.format(file_toread, list_data))
-                self.urn_codes = list_data
-        elif file_toread == self.urn_fragment_file:
-            with open(file_toread, 'r') as f:
-                list_data = f.read().split('\n')
-                logging.debug('Resultado de leer {} = {}'.format(file_toread, list_data))
-                self.urn_passages = list_data
+    def __read_data(self, file_toread, var_tostore):
+        with open(file_toread, 'r') as f:
+            list_data = f.read().split('\n')
+            logging.debug('Resultado de leer {} = {}'.format(file_toread, list_data))
+            var_tostore = list_data
 
     def complete_execution(self):
         self.__get_passages_urn()
