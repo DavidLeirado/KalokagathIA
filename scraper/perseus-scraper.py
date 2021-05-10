@@ -23,9 +23,8 @@ class Perseus():
     invalid_texts = []
     data = []
     urn_scraped = []
-    urns_toscrap = []
     urn_file = 'metadata/.urn.txt'
-    urn_fragment_file = 'metadata/urn_fragmentos.txt'
+    urn_fragment_file = 'metadata/.urn_fragmentos.txt'
     urn_nonvalid_texts = 'metadata/.urn_textos_no_disponibles.txt'
     scrapeado_file = 'metadata/.scrapeado.txt'
 
@@ -68,7 +67,7 @@ class Perseus():
                 f.write('Autor,Obra,Fragmento,Texto\n')
             elif mode == 'a':
                 f.write('\n')
-            for urn in self.urns_toscrap:
+            for urn in self.urn_passages:
                 if urn not in self.urn_scraped:
                     try:
                         persAPItext_req = requests.get(self.__perseusAPI_text+urn)
@@ -115,8 +114,9 @@ class Perseus():
     def actualizacion(self):
         self.append = True
         self.__read_data(self.scrapeado_file, self.urn_scraped)
+        logging.debug(self.urn_scraped)
         self.__get_passages_urn()
-        self.__get_text(self.urn_passages, 'a')
+        self.__get_text('a')
 
 
 def main():
