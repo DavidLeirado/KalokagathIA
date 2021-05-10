@@ -86,12 +86,9 @@ class Perseus():
                         line = "\"{}\",\"{}\",\"{}\",\"{}\"\n".format(autor, obra, fragmento, texto)                         
                         print(line)
                         f.write(line)
-                        self.urn_scraped.append(urn)
+                        self.__write_data([urn, ''],self.scrapeado_file)
                         count +=1
-                        if count == 1000:
-                            print('Realizando copia de seguridad')
-                            self.__write_data(self.urn_scraped, self.scrapeado_file)
-                            self.urn_scraped = []
+                        if count == 5000:
                             print('Descansando un poco zzz...')
                             time.sleep(10)
                             count = 0
@@ -101,8 +98,7 @@ class Perseus():
                         logging.debug('AttributeError para {}'.format(urn))
                     
                     except ConnectionError:
-                        logging.debug('Error de conexión. Guardando progreso y cerrando programa')
-                        self.__write_data(self.urn_scraped, self.scrapeado_file)
+                        logging.debug('Error de conexión. El progreso está guardado y se puede continuar el scraping con el parámetro -u en una nueva ejecución')
                         sys.exit(0)
 
     def __write_data(self, data, file_container):
