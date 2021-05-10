@@ -66,7 +66,7 @@ class Perseus():
             print('Iniciando archivos')
             if self.scrap_mode == 'complete':
                 f.write('Autor,Obra,Fragmento,Texto\n')
-                self.__write_data('', self.scrapeado_file)
+                self.__write_data(['',''], self.scrapeado_file)
                 self.scrap_mode='update'
 
             elif self.scrap_mode == 'update':
@@ -104,18 +104,17 @@ class Perseus():
     def __write_data(self, data, file_container):
         if self.scrap_mode=='update':
             with open(file_container, 'a') as f:
-                f.write('\n')
                 f.write('\n'.join(data))
 
         elif self.scrap_mode=='complete':
             with open(file_container, 'w') as f:
                 f.write('\n'.join(data))
 
-    def __read_data(self, file_toread, var_tostore):
+    def __read_data(self, file_toread):
         with open(file_toread, 'r') as f:
             list_data = f.read().split('\n')
             logging.debug('Resultado de leer {} = {}'.format(file_toread, list_data))
-            var_tostore = list_data
+            return list_data
 
     def complete_execution(self):
         self.scrap_mode = 'complete'
@@ -125,7 +124,7 @@ class Perseus():
 
     def actualizacion(self):
         self.scrap_mode = 'update'
-        self.__read_data(self.scrapeado_file, self.urn_scraped)
+        self.urn_scraped = self.__read_data(self.scrapeado_file)
         logging.debug(self.urn_scraped)
         self.__get_passages_urn()
         self.__get_text('a')
