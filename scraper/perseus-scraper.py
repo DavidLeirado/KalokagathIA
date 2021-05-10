@@ -108,7 +108,7 @@ class Perseus():
     def complete_execution(self):
         self.__get_passages_urn()
         self.__write_data(self.urn_passages, self.urn_fragment_file)
-        self.__get_text(self.urn_passages)
+        self.__get_text('w')
 
     def actualizacion(self):
         self.append = True
@@ -123,7 +123,7 @@ def main():
     group.add_argument("-t","--text", action='store_true', help="El programa limpia los datos ya recabados y empieza su ejecución desde 0. Solo recomendado si es la primera ejecución")
     group.add_argument("-u","--update", action = 'store_true',help="El programa revisa los textos aún no añadidos al csv y actualiza la información de éste de ser posible")
     
-    parser.add_argument("DEBUG", help="Inicia el programa en modo DEBUG")
+    parser.add_argument("-D","--DEBUG",action = 'store_true',default=False, help="Inicia el programa en modo DEBUG")
 
     args = parser.parse_args()
     
