@@ -16,16 +16,17 @@ class Perseus():
         self.__perseusAPI_text = 'http://www.perseus.tufts.edu/hopper/CTS?request=GetPassage&urn='
         self.__greekMarker = 'greekLit:'
 
+    append = False
     urn_codes = []
     urn_passages = []
     invalid_texts = []
     data = []
-    urn_passages_toscrap = []
     urn_scraped = []
+    urns_toscrap = []
     urn_file = 'urn.txt'
     urn_fragment_file = 'urn_fragmentos.txt'
     urn_nonvalid_texts = 'urn_textos_no_disponibles.txt'
-    actualizaciones = 'actualizaciones.txt'
+    scrapeado_file = 'scrapeado.txt'
 
     # Al llamar a este método, se recopilan todos los códigos URN correspondientes a textos en griego
     def __get_urns(self):
@@ -58,27 +59,39 @@ class Perseus():
         logging.debug('La cantidad total de textos inaccesibles es: {} de {}'.format(str(len(self.invalid_texts)), str(len(self.urn_codes))))
 
     # Este método extrae el fragmento, autor y obra de las URN viables
-    def __get_text(self, urns_toscrap):
-        with open('textos_griegos.csv', 'w') as f:
-            f.write('Autor,Obra,Fragmento,Texto\n')
-            for urn in urns_toscrap:
-                try:
-                    persAPItext_req = requests.get(self.__perseusAPI_text+urn)
-                    persAPItext_parser = bs4.BeautifulSoup(persAPItext_req.text, 'xml')
+    def __get_text(self, mode):
+        with open('textos_griegos.csv', mode) as f:
+            if mode == 'w':
+                f.write('Autor,Obra,Fragmento,Texto\n')
+            elif mode == 'a':
+                f.write('\n')
+            for urn in self.urns_toscrap:
+                if urn not in self.urn_scraped:
+                    try:
+                        persAPItext_req = requests.get(self.__perseusAPI_text+urn)
+                        persAPItext_parser = bs4.BeautifulSoup(persAPItext_req.text, 'xml')
     
-                    autor = persAPItext_parser.find('cts:groupname').get_text().strip()
-                    obra = persAPItext_parser.find('cts:title').get_text().strip()
-                    fragmento = persAPItext_parser.find('cts:psg').get_text().strip()
-                    texto = persAPItext_parser.find('tei:body').get_text().replace('\n', ' ').replace('  ', ' ').replace("\"", "").strip().replace('.', '..').replace(',','.')
-                    line = "\"{}\",\"{}\",\"{}\",\"{}\"\n".format(autor, obra, fragmento, texto)                         
-                    print(line)
-                    f.write(line)
-                except AttributeError:
-                    logging.debug('AttributeError para {}'.format(urn))
+                        autor = persAPItext_parser.find('cts:groupname').get_text().strip()
+                        obra = persAPItext_parser.find('cts:title').get_text().strip()
+                        fragmento = persAPItext_parser.find('cts:psg').get_text().strip()
+                        texto = persAPItext_parser.find('tei:body').get_text().replace('\n', ' ').replace('  ', ' ').replace("\"", "").strip().replace('.', '..').replace(',','.')
+                        line = "\"{}\",\"{}\",\"{}\",\"{}\"\n".format(autor, obra, fragmento, texto)                         
+                        print(line)
+                        f.write(line)
+                        self.urn_scraped.append(urn)
+                
+                    except AttributeError:
+                        logging.debug('AttributeError para {}'.format(urn))
 
     def __write_data(self, data, file_container):
-        with open(file_container, 'w') as f:
-            f.write('\n'.join(data))
+        if self.append:
+            with open(file_container, 'a') as f:
+                f.write('\n')
+                f.write('\n'.join(data))
+
+        else:
+            with open(file_container, 'w') as f:
+                f.write('\n'.join(data))
 
     def __read_data(self, file_toread, var_tostore):
         with open(file_toread, 'r') as f:
@@ -91,6 +104,11 @@ class Perseus():
         self.__write_data(self.urn_passages, self.urn_fragment_file)
         self.__get_text(self.urn_passages)
 
+    def actualizacion(self):
+        self.append = True
+        self.__read_data(self.scrapeado_file, self.urn_scraped)
+        self.__get_passages_urn()
+        self.__get_text(self.urn_passages)
 
 
 
