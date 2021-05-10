@@ -20,11 +20,13 @@ class Perseus():
     urn_passages = []
     invalid_texts = []
     data = []
+    urn_passages_toscrap = []
+    urn_scraped = []
     urn_file = 'urn.txt'
     urn_fragment_file = 'urn_fragmentos.txt'
 
     # Al llamar a este método, se recopilan todos los códigos URN correspondientes a textos en griego
-    def get_urns(self):
+    def __get_urns(self):
         persAPIcap_req = requests.get(self.__perseusAPI_capabilities)
         persAPIcap_parser = bs4.BeautifulSoup(persAPIcap_req.text, 'xml')
         
@@ -36,7 +38,8 @@ class Perseus():
         logging.debug('La cantidad de textos a scrapear es de: '+str(len(self.urn_codes)))
     
     # Este método coge el código urn de una obra y le pide a la API los códigos URN de sus respectivos pasajes
-    def get_passages_urn(self):
+    def __get_passages_urn(self):
+        self.__get_urns()
         for urn in self.urn_codes:
             persAPIpassage_req = requests.get(self.__perseusAPI_passages+urn)
             persAPIpassage_parser = bs4.BeautifulSoup(persAPIpassage_req.text, 'xml')
@@ -53,10 +56,10 @@ class Perseus():
         logging.debug('La cantidad total de textos inaccesibles es: {} de {}'.format(str(len(self.invalid_texts)), str(len(self.urn_codes))))
 
     # Este método extrae el fragmento, autor y obra de las URN viables
-    def get_text(self):
+    def __get_text(self, urns_toscrap):
         with open('textos_griegos.csv', 'w') as f:
             f.write('Autor,Obra,Fragmento,Texto\n')
-            for urn in self.urn_passages:
+            for urn in urns_toscrap:
                 try:
                     persAPItext_req = requests.get(self.__perseusAPI_text+urn)
                     persAPItext_parser = bs4.BeautifulSoup(persAPItext_req.text, 'xml')
@@ -71,12 +74,12 @@ class Perseus():
                 except AttributeError:
                     logging.debug('AttributeError para {}'.format(urn))
 
-    def write_data(self, data, file_container):
+    def __write_data(self, data, file_container):
         with open(file_container, 'w') as f:
             f.write('\n'.join(data))
             data = []
 
-    def read_data(self, file_toread):
+    def __read_data(self, file_toread):
         if file_toread == self.urn_file:
             with open(file_toread, 'r') as f:
                 list_data = f.read().split('\n')
@@ -87,6 +90,12 @@ class Perseus():
                 list_data = f.read().split('\n')
                 logging.debug('Resultado de leer {} = {}'.format(file_toread, list_data))
                 self.urn_passages = list_data
+
+    def complete_execution(self):
+        self.__get_passages_urn()
+        self.__write_data(self.urn_passages, self.urn_fragment_file)
+        self.__get_text(self.urn_passages)
+
 
 
 
