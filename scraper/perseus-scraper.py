@@ -39,7 +39,8 @@ class Perseus():
                 for work in textgroup.find_all('work'):
                     logging.debug(work['urn'])
                     self.urn_codes.append(work['urn'])
-        logging.debug('La cantidad de textos a scrapear es de: '+str(len(self.urn_codes)))
+                    print("Recogido texto con código = {}".format(work['urn']))
+        print('La cantidad de textos a scrapear es de: '+str(len(self.urn_codes)))
     
     # Este método coge el código urn de una obra y le pide a la API los códigos URN de sus respectivos pasajes
     def __get_passages_urn(self):
@@ -53,11 +54,11 @@ class Perseus():
                 self.invalid_texts.append(urn)
             else:
                 for passage_urn in persAPIpassage_parser.find('reff').find_all('urn'):
-                    logging.debug(passage_urn.get_text())
+                    print("Recogido fragmento con código = {}".format(passage_urn.get_text()))
                     self.urn_passages.append(passage_urn.get_text())
         
-        logging.debug('La cantidad de pasajes scrapeables es de: '+str(len(self.urn_passages)))
-        logging.debug('La cantidad total de textos inaccesibles es: {} de {}'.format(str(len(self.invalid_texts)), str(len(self.urn_codes))))
+        print('La cantidad de pasajes scrapeables es de: '+str(len(self.urn_passages)))
+        print('La cantidad total de textos inaccesibles es: {} de {}'.format(str(len(self.invalid_texts)), str(len(self.urn_codes))))
 
     # Este método extrae el fragmento, autor y obra de las URN viables
     def __get_text(self, mode):
