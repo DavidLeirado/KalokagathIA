@@ -24,10 +24,10 @@ class Perseus():
     data = []
     urn_scraped = []
     urns_toscrap = []
-    urn_file = 'urn.txt'
-    urn_fragment_file = 'urn_fragmentos.txt'
-    urn_nonvalid_texts = 'urn_textos_no_disponibles.txt'
-    scrapeado_file = 'scrapeado.txt'
+    urn_file = 'metadata/.urn.txt'
+    urn_fragment_file = 'metadata/urn_fragmentos.txt'
+    urn_nonvalid_texts = 'metadata/.urn_textos_no_disponibles.txt'
+    scrapeado_file = 'metadata/.scrapeado.txt'
 
     # Al llamar a este método, se recopilan todos los códigos URN correspondientes a textos en griego
     def __get_urns(self):
@@ -54,8 +54,9 @@ class Perseus():
                 self.invalid_texts.append(urn)
             else:
                 for passage_urn in persAPIpassage_parser.find('reff').find_all('urn'):
-                    print("Recogido fragmento con código = {}".format(passage_urn.get_text()))
-                    self.urn_passages.append(passage_urn.get_text())
+                    if 'lat' not in passage_urn.get_text():
+                        print("Recogido fragmento con código = {}".format(passage_urn.get_text()))
+                        self.urn_passages.append(passage_urn.get_text())
         
         print('La cantidad de pasajes scrapeables es de: '+str(len(self.urn_passages)))
         print('La cantidad total de textos inaccesibles es: {} de {}'.format(str(len(self.invalid_texts)), str(len(self.urn_codes))))
