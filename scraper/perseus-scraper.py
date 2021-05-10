@@ -82,6 +82,11 @@ class Perseus():
                 
                     except AttributeError:
                         logging.debug('AttributeError para {}'.format(urn))
+                    
+                    except ConnectionError:
+                        logging.debug('Error de conexión. Guardando progreso y cerrando programa')
+                        self.__write_data(self.urn_scraped, self.scrapeado_file)
+                        sys.exit(0)
 
     def __write_data(self, data, file_container):
         if self.append:
