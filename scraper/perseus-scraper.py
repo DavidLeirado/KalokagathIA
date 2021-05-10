@@ -6,6 +6,7 @@ import bs4
 import requests
 import logging
 import time
+import argparse
 
 # Iniciamos la clase Perseus()
 class Perseus():
@@ -117,37 +118,27 @@ class Perseus():
 
 
 def main():
-    # Configuración de modo DEBUG por parámetro
-    logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s- %(message)s')
-    if not 'DEBUG' in sys.argv:
-        logging.disable(logging.DEBUG)
-    logging.debug('Inicio del programa')
+    parser = argparse.ArgumentParser(description='Este programa sirve para extraer textos en griego a través de la API que ofrece Perseus. 
+            Permite, según parámetros, obtener todos los textos o descargarlos por grupos actualizando los datos')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-t", "--text", action="store_true", help="El programa limpia los datos ya recabados y empieza su ejecución desde 0. Solo recomendado si es la primera ejecución")
+    group.add_argument("-u", "--update", action="store_true", help="El programa revisa los textos aún no añadidos al csv y actualiza la información de éste de ser posible")
+    
+    parser.add_argument("DEBUG", help="Inicia el programa en modo DEBUG",action="store_true")
 
+    args = parser.parse_args()
+    
     perseusScrap = Perseus()
 
-    if '-rT' in sys.argv:
-        perseusScrap.read_data(perseusScrap.urn_file)
-    else:
-        perseusScrap.get_urns()
-
-    if '-wT' in sys.argv:
-        perseusScrap.write_data(perseusScrap.urn_codes, perseusScrap.urn_file)
-
-    if '-rF' in sys.argv:
-        perseusScrap.read_data(perseusScrap.urn_fragment_file)
-    else:
-        perseusScrap.get_passages_urn()
-
-    if '-wF' in sys.argv:
-        perseusScrap.write_data(perseusScrap.urn_passages, perseusScrap.urn_fragment_file)
-
-    if '-t' in sys.argv:
-        perseusScrap.get_text()
-
-    if len(sys.argv)==1:
-        perseusScrap.get_urns()
-        perseusScrap.get_passage_urn()
-        perseusScrap.get_text()
+    # Configuración de modo DEBUG por parámetro
+    logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s- %(message)s')
+    if not args.DEBUG:
+        logging.disable(logging.DEBUG)
+    logging.debug('Inicio del programa')
+    if args.text:
+        perseusScrap.complete_execution()
+    elif args.update:
+        perseusScrap.actualizacion()
 
 
 if __name__ =='__main__':
