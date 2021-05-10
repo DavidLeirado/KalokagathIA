@@ -118,13 +118,12 @@ class Perseus():
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Este programa sirve para extraer textos en griego a través de la API que ofrece Perseus. 
-            Permite, según parámetros, obtener todos los textos o descargarlos por grupos actualizando los datos')
+    parser = argparse.ArgumentParser(description='Este programa sirve para extraer textos en griego a través de la API que ofrece Perseus. Permite, según parámetros, obtener todos los textos o descargarlos por grupos actualizando los datos')
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("-t", "--text", action="store_true", help="El programa limpia los datos ya recabados y empieza su ejecución desde 0. Solo recomendado si es la primera ejecución")
-    group.add_argument("-u", "--update", action="store_true", help="El programa revisa los textos aún no añadidos al csv y actualiza la información de éste de ser posible")
+    group.add_argument("-t","--text", action='store_true', help="El programa limpia los datos ya recabados y empieza su ejecución desde 0. Solo recomendado si es la primera ejecución")
+    group.add_argument("-u","--update", action = 'store_true',help="El programa revisa los textos aún no añadidos al csv y actualiza la información de éste de ser posible")
     
-    parser.add_argument("DEBUG", help="Inicia el programa en modo DEBUG",action="store_true")
+    parser.add_argument("DEBUG", help="Inicia el programa en modo DEBUG")
 
     args = parser.parse_args()
     
@@ -139,7 +138,8 @@ def main():
         perseusScrap.complete_execution()
     elif args.update:
         perseusScrap.actualizacion()
-
+    else:
+        print("Ningún parámetro fue especificado. Por favor indique un modo de ejecución para el programa. El parámetro -h muestra las opciones disponibles")
 
 if __name__ =='__main__':
     main()
