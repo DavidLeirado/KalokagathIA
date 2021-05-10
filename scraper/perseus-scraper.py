@@ -17,7 +17,7 @@ class Perseus():
         self.__perseusAPI_text = 'http://www.perseus.tufts.edu/hopper/CTS?request=GetPassage&urn='
         self.__greekMarker = 'greekLit:'
 
-    append = False
+    scrap_mode = ''
     urn_codes = []
     urn_passages = []
     invalid_texts = []
@@ -63,10 +63,16 @@ class Perseus():
     # Este método extrae el fragmento, autor y obra de las URN viables
     def __get_text(self, mode):
         with open('textos_griegos.csv', mode) as f:
-            if mode == 'w':
+            print('Iniciando archivos')
+            if self.scrap_mode == 'complete':
                 f.write('Autor,Obra,Fragmento,Texto\n')
-            elif mode == 'a':
+                self.__write_data('', self.scrapeado_file)
+                self.scrap_mode='update'
+
+            elif self.scrap_mode == 'update':
                 f.write('\n')
+            
+            count = 0
             for urn in self.urn_passages:
                 if urn not in self.urn_scraped:
                     try:
@@ -81,6 +87,15 @@ class Perseus():
                         print(line)
                         f.write(line)
                         self.urn_scraped.append(urn)
+                        count +=1
+                        if count == 1000:
+                            print('Realizando copia de seguridad')
+                            self.__write_data(self.urn_scraped, self.scrapeado_file)
+                            self.urn_scraped = []
+                            print('Descansando un poco zzz...')
+                            time.sleep(10)
+                            count = 0
+
                 
                     except AttributeError:
                         logging.debug('AttributeError para {}'.format(urn))
@@ -91,12 +106,12 @@ class Perseus():
                         sys.exit(0)
 
     def __write_data(self, data, file_container):
-        if self.append:
+        if self.scrap_mode=='update':
             with open(file_container, 'a') as f:
                 f.write('\n')
                 f.write('\n'.join(data))
 
-        else:
+        elif self.scrap_mode=='complete':
             with open(file_container, 'w') as f:
                 f.write('\n'.join(data))
 
@@ -107,12 +122,13 @@ class Perseus():
             var_tostore = list_data
 
     def complete_execution(self):
+        self.scrap_mode = 'complete'
         self.__get_passages_urn()
         self.__write_data(self.urn_passages, self.urn_fragment_file)
         self.__get_text('w')
 
     def actualizacion(self):
-        self.append = True
+        self.scrap_mode = 'update'
         self.__read_data(self.scrapeado_file, self.urn_scraped)
         logging.debug(self.urn_scraped)
         self.__get_passages_urn()
