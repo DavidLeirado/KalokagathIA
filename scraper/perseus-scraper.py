@@ -113,8 +113,7 @@ class Perseus():
         self.append = True
         self.__read_data(self.scrapeado_file, self.urn_scraped)
         self.__get_passages_urn()
-        self.__get_text(self.urn_passages)
-
+        self.__get_text(self.urn_passages, 'a')
 
 
 def main():
