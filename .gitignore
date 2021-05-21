@@ -2,3 +2,4 @@ scraper/*.csv
 scraper/*.txt
 scraper/metadata/*
 dataset-ampliaciones-xml/*/
+test_dataset/*.csv
