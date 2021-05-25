@@ -10,3 +10,5 @@ Training/textos_griegos.csv
 Scrapper/scraper/textos_griegos.csv
 .ipynb_checkpoints/Untitled-checkpoint.ipynb
 .ipynb_checkpoints/df_explorer-checkpoint.ipynb
+Cleaning/textos_griegos.csv
+Cleaning/.ipynb_checkpoints/df_cleaner-checkpoint.ipynb
