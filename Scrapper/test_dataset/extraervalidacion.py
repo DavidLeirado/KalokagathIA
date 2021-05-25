@@ -21,11 +21,9 @@ class Llamar_url():
         return lista
 
     def formato(self, fragmento):
-        text = fragmento.get_text().strip().replace('\n',' ').replace('\t', '')
-        linea = '{};{};{};{}'.format(self.autor, self.obra, fragmento[self.iden], text)
+        text = ' '.join(fragmento.get_text().strip().replace('\n',' ').replace('\t', '').replace('.', ',,').replace(',','.').split())
+        linea = '{},{},{},{}'.format(self.autor, self.obra, fragmento[self.iden], text)
         return linea
- 
-
 
 
 class Lineparse(Llamar_url):

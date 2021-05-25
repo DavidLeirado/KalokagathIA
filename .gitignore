@@ -2,7 +2,7 @@ scraper/*.csv
 scraper/*.txt
 scraper/metadata/*
 dataset-ampliaciones-xml/*/
-test_dataset/*.csv
+Scrapper/test_dataset/test.csv
 Training/results.zip
 Validation/validacion.csv
 Training/textos_griegos.csv

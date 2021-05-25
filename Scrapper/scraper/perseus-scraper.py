@@ -82,8 +82,8 @@ class Perseus():
                         autor = persAPItext_parser.find('cts:groupname').get_text().strip()
                         obra = persAPItext_parser.find('cts:title').get_text().strip()
                         fragmento = persAPItext_parser.find('cts:psg').get_text().strip()
-                        texto = persAPItext_parser.find('tei:body').get_text().replace('\n', ' ').replace('  ', ' ').replace("\"", "").strip().replace('.', '..').replace(',','.')
-                        line = "\"{}\",\"{}\",\"{}\",\"{}\"\n".format(autor, obra, fragmento, texto)                         
+                        texto = persAPItext_parser.find('tei:body').get_text().replace('\n', ' ').replace('  ', ' ').replace("\"", "").strip()
+                        line = "\"{}\",\"{}\",\"{}\",\"{}\"\n".format(autor, obra, fragmento, texto)
                         print(line)
                         f.write(line)
                         self.__write_data([urn, ''],self.scrapeado_file)
@@ -93,10 +93,10 @@ class Perseus():
                             time.sleep(10)
                             count = 0
 
-                
+
                     except AttributeError:
                         logging.debug('AttributeError para {}'.format(urn))
-                    
+
                     except ConnectionError:
                         logging.debug('Error de conexión. El progreso está guardado y se puede continuar el scraping con el parámetro -u en una nueva ejecución')
                         sys.exit(0)
