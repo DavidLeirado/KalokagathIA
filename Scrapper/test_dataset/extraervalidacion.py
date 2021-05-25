@@ -22,7 +22,11 @@ class Llamar_url():
 
     def formato(self, fragmento):
         text = ' '.join(fragmento.get_text().strip().replace('\n',' ').replace('\t', '').replace('.', ',,').replace(',','.').split())
-        linea = '{},{},{},{}'.format(self.autor, self.obra, fragmento[self.iden], text)
+        try:
+            number = fragmento[self.iden]
+        except:
+            number = 'Empty'
+        linea = '{},{},{},{}'.format(self.autor, self.obra, number, text)
         return linea
 
 
