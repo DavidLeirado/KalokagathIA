@@ -7,8 +7,8 @@ import requests, os, bs4, sys
 
 class Llamar_url():
     def __init__(self, url, autor, obra, iden):
-        self.autor = autor
-        self.obra = obra
+        self.autor = autor.replace(',','.')
+        self.obra = obra.replace(',','.')
         self.iden = iden
         self.llamada = requests.get(url)
         self.parser = bs4.BeautifulSoup(self.llamada.text, 'xml')
