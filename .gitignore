@@ -17,3 +17,8 @@ Cleaning/val_df.csv
 Training/.ipynb_checkpoints/Training_kaggle_v6-checkpoint.ipynb
 Training/.ipynb_checkpoints/training-checkpoint.ipynb
 Validation/modelo.zip
+Cleaning/.ipynb_checkpoints/df_explorer-checkpoint.ipynb
+data/modelo/pytorch_model.bin
+data/modelo/training_args.bin
+Validation/.ipynb_checkpoints/validation-checkpoint.ipynb
+Training/.ipynb_checkpoints/training-greek-bert-checkpoint.ipynb
