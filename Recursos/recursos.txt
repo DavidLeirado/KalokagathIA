@@ -1,0 +1,9 @@
+Modelo BERT para griego y cómo funciona:
+
+https://huggingface.co/nlpaueb/bert-base-greek-uncased-v1
+https://github.com/nlpaueb/greek-bert
+
+
+Ilustrated BERT:
+
+https://jalammar.github.io/illustrated-bert/
