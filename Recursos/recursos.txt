@@ -5,6 +5,7 @@ https://github.com/nlpaueb/greek-bert
 https://huggingface.co/transformers/model_doc/bert.html#bertforsequenceclassification
 https://www.youtube.com/watch?v=iDulhoQ2pro
 https://www.youtube.com/watch?v=-9evrZnBorM
+https://arxiv.org/pdf/1810.04805.pdf
 
 
 Ilustrated BERT, ilustrated transformer:
