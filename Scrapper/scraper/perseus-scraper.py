@@ -8,28 +8,35 @@ import logging
 import time
 import argparse
 
-# Iniciamos la clase Perseus()
 class Perseus():
-    # Iniciamos el constructor de la clase Perseus()
-    def __init__(self):
+    def __init__(self, scrap_mode):
         self.__perseusAPI_capabilities = 'http://www.perseus.tufts.edu/hopper/CTS?request=GetCapabilities'
         self.__perseusAPI_passages = 'http://www.perseus.tufts.edu/hopper/CTS?request=GetValidReff&urn='
         self.__perseusAPI_text = 'http://www.perseus.tufts.edu/hopper/CTS?request=GetPassage&urn='
         self.__greekMarker = 'greekLit:'
+        self.scrap_mode = scrap_mode
+        self.urn_codes = []
+        self.urn_passages = []
+        self.invalid_texts = []
+        self.data = []
+        self.urn_scraped = []
+        self.urn_file = 'metadata/urn.txt'
+        self.urn_fragment_file = 'metadata/urn_fragments.txt'
+        self.urn_nonvalid_texts = 'metadata/urn_not_available_texts.txt'
+        self.scraped_file = 'metadata/scraped.txt'
 
-    scrap_mode = ''
-    urn_codes = []
-    urn_passages = []
-    invalid_texts = []
-    data = []
-    urn_scraped = []
-    urn_file = 'metadata/.urn.txt'
-    urn_fragment_file = 'metadata/.urn_fragmentos.txt'
-    urn_nonvalid_texts = 'metadata/.urn_textos_no_disponibles.txt'
-    scrapeado_file = 'metadata/.scrapeado.txt'
+        if self.scrap_mode == "complete":
+            self.complete_execution()
+        elif self.scrap_mode == "update":
+            self.update()
 
     # Al llamar a este método, se recopilan todos los códigos URN correspondientes a textos en griego
     def __get_urns(self):
+        
+        """
+        This method collects every URN code relative to greek texts
+        """
+
         persAPIcap_req = requests.get(self.__perseusAPI_capabilities)
         persAPIcap_parser = bs4.BeautifulSoup(persAPIcap_req.text, 'xml')
         
@@ -38,35 +45,45 @@ class Perseus():
                 for work in textgroup.find_all('work'):
                     logging.debug(work['urn'])
                     self.urn_codes.append(work['urn'])
-                    print("Recogido texto con código = {}".format(work['urn']))
-        print('La cantidad de textos a scrapear es de: '+str(len(self.urn_codes)))
+                    print(f"Scraped text URN = {work['urn']}")
+        print(f'Total texts to scrap: {str(len(self.urn_codes))}')
     
     # Este método coge el código urn de una obra y le pide a la API los códigos URN de sus respectivos pasajes
     def __get_passages_urn(self):
+        
+        """
+        This method gets the URN codes from the Perseus API of the texts fragments for every text URN
+        """
+        
         self.__get_urns()
         for urn in self.urn_codes:
             persAPIpassage_req = requests.get(self.__perseusAPI_passages+urn)
             persAPIpassage_parser = bs4.BeautifulSoup(persAPIpassage_req.text, 'xml')
         
             if persAPIpassage_parser.find('reff') == None:
-                logging.debug('El texto con referencia \"{}\" no se puede scrapear'.format(urn))
+                logging.debug(f'Text with refference \"{urn}\" could not be scraped')
                 self.invalid_texts.append(urn)
             else:
                 for passage_urn in persAPIpassage_parser.find('reff').find_all('urn'):
                     if 'lat' not in passage_urn.get_text():
-                        print("Recogido fragmento con código = {}".format(passage_urn.get_text()))
+                        print(f"Scraped fragment URN = {passage_urn.get_text()}")
                         self.urn_passages.append(passage_urn.get_text())
         
-        print('La cantidad de pasajes scrapeables es de: '+str(len(self.urn_passages)))
-        print('La cantidad total de textos inaccesibles es: {} de {}'.format(str(len(self.invalid_texts)), str(len(self.urn_codes))))
+        print(f'Total valid fragments: {str(len(self.urn_passages))}')
+        print(f'Total invalid texts: {str(len(self.invalid_texts))} of {str(len(self.urn_codes))}')
 
     # Este método extrae el fragmento, autor y obra de las URN viables
     def __get_text(self, mode):
-        with open('textos_griegos.csv', mode) as f:
-            print('Iniciando archivos')
+   
+        """
+        This method extracts the fragments, authors and titles from the not broken URNs
+        """
+
+        with open('greek_texts.csv', mode) as f:
+            print('Initializing files')
             if self.scrap_mode == 'complete':
-                f.write('Autor,Obra,Fragmento,Texto\n')
-                self.__write_data(['',''], self.scrapeado_file)
+                f.write('author,title,fragment,text\n')
+                self.__write_data(['',''], self.scraped_file)
                 self.scrap_mode='update'
 
             elif self.scrap_mode == 'update':
@@ -79,29 +96,34 @@ class Perseus():
                         persAPItext_req = requests.get(self.__perseusAPI_text+urn)
                         persAPItext_parser = bs4.BeautifulSoup(persAPItext_req.text, 'xml')
     
-                        autor = persAPItext_parser.find('cts:groupname').get_text().strip()
-                        obra = persAPItext_parser.find('cts:title').get_text().strip()
-                        fragmento = persAPItext_parser.find('cts:psg').get_text().strip()
-                        texto = persAPItext_parser.find('tei:body').get_text().replace('\n', ' ').replace('  ', ' ').replace("\"", "").strip()
-                        line = "\"{}\",\"{}\",\"{}\",\"{}\"\n".format(autor, obra, fragmento, texto)
+                        author = persAPItext_parser.find('cts:groupname').get_text().strip()
+                        title = persAPItext_parser.find('cts:title').get_text().strip()
+                        fragment = persAPItext_parser.find('cts:psg').get_text().strip()
+                        text = persAPItext_parser.find('tei:body').get_text().replace('\n', ' ').replace('  ', ' ').replace("\"", "").strip()
+                        line = f"\"{author}\",\"{title}\",\"{fragment}\",\"{text}\"\n"
                         print(line)
                         f.write(line)
-                        self.__write_data([urn, ''],self.scrapeado_file)
+                        self.__write_data([urn, ''],self.scraped_file)
                         count +=1
                         if count == 5000:
-                            print('Descansando un poco zzz...')
+                            print('Napping a bit zzz...')
                             time.sleep(10)
                             count = 0
 
 
                     except AttributeError:
-                        logging.debug('AttributeError para {}'.format(urn))
+                        logging.debug(f'AttributeError for {urn}')
 
                     except ConnectionError:
-                        logging.debug('Error de conexión. El progreso está guardado y se puede continuar el scraping con el parámetro -u en una nueva ejecución')
+                        logging.debug('Conection Error. Progress was saved and you can continue the process by restarting the program with -u flag')
                         sys.exit(0)
 
     def __write_data(self, data, file_container):
+        
+        """
+        This method writes the data into the files given as parameters
+        """
+
         if self.scrap_mode=='update':
             with open(file_container, 'a') as f:
                 f.write('\n'.join(data))
@@ -113,46 +135,63 @@ class Perseus():
     def __read_data(self, file_toread):
         with open(file_toread, 'r') as f:
             list_data = f.read().split('\n')
-            logging.debug('Resultado de leer {} = {}'.format(file_toread, list_data))
+            logging.debug(f'Result of reading {file_toread} = {list_data}')
             return list_data
 
     def complete_execution(self):
-        self.scrap_mode = 'complete'
+        
+        """
+        This method starts the workflow if the class is instantiated in complete mode
+        """
+
         self.__get_passages_urn()
         self.__write_data(self.urn_passages, self.urn_fragment_file)
         self.__get_text('w')
 
-    def actualizacion(self):
-        self.scrap_mode = 'update'
-        self.urn_scraped = self.__read_data(self.scrapeado_file)
+    def update(self):
+        
+        """
+        This method starts the workflow if the class is instantiated in update mode
+        """
+
+        self.urn_scraped = self.__read_data(self.scraped_file)
         logging.debug(self.urn_scraped)
         self.__get_passages_urn()
         self.__get_text('a')
 
-
 def main():
-    parser = argparse.ArgumentParser(description='Este programa sirve para extraer textos en griego a través de la API que ofrece Perseus. Permite, según parámetros, obtener todos los textos o descargarlos por grupos actualizando los datos')
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument("-t","--text", action='store_true', help="El programa limpia los datos ya recabados y empieza su ejecución desde 0. Solo recomendado si es la primera ejecución")
-    group.add_argument("-u","--update", action = 'store_true',help="El programa revisa los textos aún no añadidos al csv y actualiza la información de éste de ser posible")
     
-    parser.add_argument("-D","--DEBUG",action = 'store_true',default=False, help="Inicia el programa en modo DEBUG")
+    """
+    Parameter configuration, class instantiation and program initialization
+    """
+    
+    # Parameter configuration, using argparse
+    parser = argparse.ArgumentParser(description='This program extracts greek texts by calling the API Perseus offers. It allows to obtain every text in a single execution or actualize the texts you already have on each calling to the program')
+    
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-t","--text", action='store_true', help='The program cleans already scraped data and starts from the beggining. Only recomended for the first execution')
+    group.add_argument("-u","--update", action = 'store_true',help="The program checks for texts not in the csv and add them if possible")
+    
+    parser.add_argument("-D","--DEBUG",action = 'store_true',default=False, help="Starts the program in DEBUG mode")
 
     args = parser.parse_args()
     
-    perseusScrap = Perseus()
-
-    # Configuración de modo DEBUG por parámetro
+    # Program start
     logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s- %(message)s')
     if not args.DEBUG:
         logging.disable(logging.DEBUG)
-    logging.debug('Inicio del programa')
+    logging.debug('Program starting')
+    
+    # For the complete execution
     if args.text:
-        perseusScrap.complete_execution()
+        Perseus("complete")
+    
+    # For the update execution
     elif args.update:
-        perseusScrap.actualizacion()
+        Perseus("update")
+    
     else:
-        print("Ningún parámetro fue especificado. Por favor indique un modo de ejecución para el programa. El parámetro -h muestra las opciones disponibles")
+        print("No parameter specified. Use -h parameter to see the options")
 
 if __name__ =='__main__':
     main()
