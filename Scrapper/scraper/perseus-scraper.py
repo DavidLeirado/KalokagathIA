@@ -30,7 +30,7 @@ class Perseus():
         elif self.scrap_mode == "update":
             self.update()
 
-    # Al llamar a este método, se recopilan todos los códigos URN correspondientes a textos en griego
+
     def __get_urns(self):
         
         """
@@ -48,7 +48,7 @@ class Perseus():
                     print(f"Scraped text URN = {work['urn']}")
         print(f'Total texts to scrap: {str(len(self.urn_codes))}')
     
-    # Este método coge el código urn de una obra y le pide a la API los códigos URN de sus respectivos pasajes
+    
     def __get_passages_urn(self):
         
         """
@@ -72,7 +72,7 @@ class Perseus():
         print(f'Total valid fragments: {str(len(self.urn_passages))}')
         print(f'Total invalid texts: {str(len(self.invalid_texts))} of {str(len(self.urn_codes))}')
 
-    # Este método extrae el fragmento, autor y obra de las URN viables
+    
     def __get_text(self, mode):
    
         """
@@ -118,6 +118,7 @@ class Perseus():
                         logging.debug('Conection Error. Progress was saved and you can continue the process by restarting the program with -u flag')
                         sys.exit(0)
 
+    
     def __write_data(self, data, file_container):
         
         """
@@ -132,12 +133,19 @@ class Perseus():
             with open(file_container, 'w') as f:
                 f.write('\n'.join(data))
 
+    
     def __read_data(self, file_toread):
+
+        """
+        This method reads the data from the files given as parameters
+        """
+
         with open(file_toread, 'r') as f:
             list_data = f.read().split('\n')
             logging.debug(f'Result of reading {file_toread} = {list_data}')
             return list_data
 
+    
     def complete_execution(self):
         
         """
