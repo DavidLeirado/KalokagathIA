@@ -14,6 +14,12 @@ https://jalammar.github.io/illustrated-bert/
 https://jalammar.github.io/illustrated-transformer/
 
 
+BERT Basico y transformers
+
+https://arxiv.org/pdf/1706.03762.pdf
+https://towardsdatascience.com/bert-technology-introduced-in-3-minutes-2c2f9968268c
+https://towardsdatascience.com/bert-roberta-distilbert-xlnet-which-one-to-use-3d5ab82ba5f8
+
 Preprocesado del texto para introducir en el modelo:
 
 https://huggingface.co/transformers/preprocessing.html
