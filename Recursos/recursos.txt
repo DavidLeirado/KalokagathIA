@@ -28,3 +28,8 @@ https://www.youtube.com/watch?v=zjaRNfvNMTs
 Para analizar resultados:
 
 https://medium.com/analytics-vidhya/explainability-of-bert-through-attention-7dbbab8a7062
+
+BERT and transformers
+https://towardsdatascience.com/bert-technology-introduced-in-3-minutes-2c2f9968268c
+https://towardsdatascience.com/bert-roberta-distilbert-xlnet-which-one-to-use-3d5ab82ba5f8
+https://arxiv.org/pdf/1706.03762.pdf (Google Transformers Architecture)
