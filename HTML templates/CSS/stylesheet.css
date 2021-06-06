@@ -3,8 +3,8 @@
 }
 
 body {
-    background-color: whitesmoke;
-    font-family: Arial, Verdana, sans-serif;
+    background-color: white;
+    font-family: Verdana, sans-serif;
 }
 
 div {
@@ -15,13 +15,14 @@ div {
 p {
     text-align: justify;
     margin: 5%;
+    display: block;
 }
 
 h2 {
     text-align: center;
 }
 
-div.header {
+.header {
     background-image: url(../images/venus-1221361.jpg);
     background-repeat: no-repeat;
     background-position-y: -200px;
@@ -31,14 +32,29 @@ div.header {
     margin: 0%;
 }
 
-div.right_column {
-    background-color: darkmagenta;
+.right_column {
+    background-color: #FFEADE;
     width: 50%;
+    height: 100%;
+    opacity: 0.4;
+    transition: 1s opacity;
 }
 
-div.left_column {
-    background-color: darkgoldenrod;
+.right_column:hover {
+    opacity: 1;
+}
+
+.left_column {
+    background-color: #421800;
+    color: #FFEADE;
     width: 50%;
+    height: 100%;
+    opacity: 0.4;
+    transition: 1s opacity;
+}
+
+.left_column:hover {
+    opacity: 1;
 }
 
 img {
@@ -46,34 +62,32 @@ img {
     margin: auto;
 }
 
-div.content_container {
+.content_container {
     padding-left: 5px;
     padding-right: 5px;
 }
 
-div.option_bar {
+.option_bar {
     height: 50px;
     margin: 0%;
-    background-color: whitesmoke;
+    background-color: #FFEADE;
 }
 
-div.option_bar>span {
+.button {
+    display: inline-block;
     float: left;
-    background-color: whitesmoke;
+    color: #421800;
+    background-color: #FFEADE;
     transition: 0.5s background-color;
     height: 100%;
     width: 100%;
     max-width: 200px;
     padding: 0%;
     text-align: center;
+    text-decoration: none;
 }
 
-div.option_bar>span:hover {
-    opacity: 1;
-    background-color: grey;
-    color: white;
-}
-
-div.option_bar>span>a>h3 {
-    text-align: center;
+.button:hover {
+    background-color: #421800;
+    color: #FFEADE;
 }
