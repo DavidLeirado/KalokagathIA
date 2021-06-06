@@ -1,0 +1,93 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: white;
+    font-family: Verdana, sans-serif;
+}
+
+div {
+    float: left;
+    width: 100%;
+}
+
+p {
+    text-align: justify;
+    margin: 5%;
+    display: block;
+}
+
+h2 {
+    text-align: center;
+}
+
+.header {
+    background-image: url(../images/venus-1221361.jpg);
+    background-repeat: no-repeat;
+    background-position-y: -200px;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    width: 100%;
+    margin: 0%;
+}
+
+.right_column {
+    background-color: #FFEADE;
+    width: 50%;
+    height: 100%;
+    opacity: 0.4;
+    transition: 1s opacity;
+}
+
+.right_column:hover {
+    opacity: 1;
+}
+
+.left_column {
+    background-color: #421800;
+    color: #FFEADE;
+    width: 50%;
+    height: 100%;
+    opacity: 0.4;
+    transition: 1s opacity;
+}
+
+.left_column:hover {
+    opacity: 1;
+}
+
+img {
+    display: block;
+    margin: auto;
+}
+
+.content_container {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.option_bar {
+    height: 50px;
+    margin: 0%;
+    background-color: #FFEADE;
+}
+
+.button {
+    display: inline-block;
+    float: left;
+    color: #421800;
+    background-color: #FFEADE;
+    transition: 0.5s background-color;
+    height: 100%;
+    width: 100%;
+    max-width: 200px;
+    padding: 0%;
+    text-align: center;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #421800;
+    color: #FFEADE;
+}
