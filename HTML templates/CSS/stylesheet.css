@@ -1,0 +1,79 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: whitesmoke;
+    font-family: Arial, Verdana, sans-serif;
+}
+
+div {
+    float: left;
+    width: 100%;
+}
+
+p {
+    text-align: justify;
+    margin: 5%;
+}
+
+h2 {
+    text-align: center;
+}
+
+div.header {
+    background-image: url(../images/venus-1221361.jpg);
+    background-repeat: no-repeat;
+    background-position-y: -200px;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    width: 100%;
+    margin: 0%;
+}
+
+div.right_column {
+    background-color: darkmagenta;
+    width: 50%;
+}
+
+div.left_column {
+    background-color: darkgoldenrod;
+    width: 50%;
+}
+
+img {
+    display: block;
+    margin: auto;
+}
+
+div.content_container {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+div.option_bar {
+    height: 50px;
+    margin: 0%;
+    background-color: whitesmoke;
+}
+
+div.option_bar>span {
+    float: left;
+    background-color: whitesmoke;
+    transition: 0.5s background-color;
+    height: 100%;
+    width: 100%;
+    max-width: 200px;
+    padding: 0%;
+    text-align: center;
+}
+
+div.option_bar>span:hover {
+    opacity: 1;
+    background-color: grey;
+    color: white;
+}
+
+div.option_bar>span>a>h3 {
+    text-align: center;
+}
