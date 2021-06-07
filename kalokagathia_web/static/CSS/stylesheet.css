@@ -12,7 +12,6 @@ body {
 }
 
 .main_container {
-    background-color: white;
     margin: 0%;
     padding: 0%;
     width: 100%;
@@ -63,6 +62,95 @@ body {
     animation-name: fade;
     animation-duration: 1s;
     animation-delay: 2.5s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+.button_1,
+.button_2,
+.button_3,
+.predictor {
+    display: inline-block;
+    box-sizing: border-box;
+    float: left;
+    z-index: 3;
+    padding: 0.35em 1.2em;
+    border: 0.4em solid #421800;
+    border-radius: 1em 4em 1em 4em / 2em 1em 2em 1em !important;
+    -webkit-border-radius: 1em 4em 1em 4em / 2em 1em 2em 1em !important;
+    -moz-border-radius: 1em 4em 1em 4em / 2em 1em 2em 1em !important;
+    margin: 0 1em 0em 0;
+    border-radius: 0.12em;
+    text-decoration: none;
+    font-weight: 300;
+    color: #421800;
+    text-align: center;
+    transition: color 0.5s, background-color 0.5s, border 0.5s, box-shadow 0.5s;
+}
+
+.button_1:hover,
+.button_2:hover,
+.button_3:hover,
+.predictor:hover {
+    color: #F37200;
+    background-color: #421800;
+    border: 0.4em solid #F37200;
+    box-shadow: 5px 5px 5px #421800;
+}
+
+.common_buttons {
+    position: absolute;
+    bottom: 8%;
+    right: 7%;
+}
+
+.predictor_container {
+    position: absolute;
+    top: 8%;
+    left: 7%;
+}
+
+.predictor {
+    display: block;
+    width: 400px;
+    margin: 0;
+    opacity: 0;
+    animation-name: fade;
+    animation-duration: 1s;
+    animation-delay: 2.7s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+.predictor_text {
+    font-weight: 900;
+    font-size: 40 !important;
+    text-transform: uppercase;
+}
+
+.button_1 {
+    opacity: 0;
+    animation-name: fade;
+    animation-duration: 2s;
+    animation-delay: 2.8s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+.button_2 {
+    opacity: 0;
+    animation-name: fade;
+    animation-duration: 2s;
+    animation-delay: 3s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+.button_3 {
+    opacity: 0;
+    animation-name: fade;
+    animation-duration: 2s;
+    animation-delay: 3.2s;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
 }
