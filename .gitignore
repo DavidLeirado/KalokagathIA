@@ -23,3 +23,4 @@ data/modelo/training_args.bin
 Validation/.ipynb_checkpoints/validation-checkpoint.ipynb
 Training/.ipynb_checkpoints/training-greek-bert-checkpoint.ipynb
 kalokagathia_web/__pycache__/app.cpython-39.pyc
+kalokagathia_web/__pycache__/
