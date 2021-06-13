@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html>
 
+{% load static %}
+
 <head>
     <title>KalokagathIA</title>
-    <link rel="stylesheet" href="../static/CSS/stylesheet.css" type="text/css">
+    <link rel="stylesheet" href= {% static "/CSS/stylesheet.css" %} type="text/css">
 </head>
 
 <body>
     <div class="main_container">
-        <img src="../static/images/light_logo/kalokagathia_banner_light.png" alt="banner" class="header_banner">
+            <img src= {% static "/images/light_logo/kalokagathia_banner_light.png" %} alt="banner" class="header_banner">
 
-        <img src="../static/images/light_logo/kalokagathia_top_light.png" alt="delimiter_top" class="delimiter_top">
+            <img src={% static "/images/light_logo/kalokagathia_top_light.png" %} alt="delimiter_top" class="delimiter_top">
 
-        <img src="../static/images/light_logo/kalokagathia_bottom_light.png" alt="delimiter_bottom" class="delimiter_bottom">
+            <img src={% static "/images/light_logo/kalokagathia_bottom_light.png" %} alt="delimiter_bottom" class="delimiter_bottom">
 
         <div class="common_buttons">
             <a href="./model_page.html" class="button_1">
