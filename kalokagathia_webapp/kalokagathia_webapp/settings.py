@@ -54,7 +54,7 @@ ROOT_URLCONF = 'kalokagathia_webapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['/home/david/soft/kalokagathia/kalokagathia_webapp/kalokagathia_webapp/static/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
