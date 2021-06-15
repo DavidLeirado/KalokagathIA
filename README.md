@@ -1,5 +1,7 @@
 # KalokagathIA
 
+<img src="kalokagathia_webapp/static/images/dark_logo/Kalokagathia_banner_fondoscuro.png">
+
 This repository holds the information of the project KalokagathIA, which is part of 4th Edition of Saturdays4AI Madrid.
 
 KalokagathIA aims to address issues that have long preoccupied humanity, specifically those related to determining the authorship of ancient texts.
