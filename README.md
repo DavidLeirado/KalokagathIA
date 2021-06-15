@@ -14,4 +14,10 @@ Two scrapers have been developed in Python, you can find them in the "SCRAPPERS"
 
 This has allowed us to obtain a dataset with more than 50 authors and the equivalent of about 110 Quixotes of text. The structure of the dataset, as you can see, is very simple and consists of only 4 fields: (Author, Work, Fragment and the Text in Greek). You can find the dataset in the "DATA" directory.
 
-From these data, we have applied a preliminary cleaning and we have separated the training subset from the validation subset. You can find the code in the "
+From these data, we have applied a preliminary cleaning and we have separated the training subset from the validation subset. You can find the code in the "CLEANING" directory.
+
+We have used BERT algorithm with a model pretrained in Greek, which we have retrained in with our dataset. You can find this code in the "TRAINING" directory.
+
+The directory "VALIDATION" contains code which uses the model with the validation dataset and interperts the results.
+
+Finally we have also provided a Mockup of the Kalokagathia Web App in the "KALOKAGATHIA_WEBAPP" directory. This webapp has been coded using Django framework and it will be integrated with our python scripts to be able to offer the functionality to end users who will be able to clasify their texts and provide feedback about the results. This feedback will be used periodically to retrain the model and enhance the results.
