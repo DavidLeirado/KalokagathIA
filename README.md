@@ -14,4 +14,4 @@ Two scrapers have been developed in Python, you can find them in the "SCRAPPERS"
 
 This has allowed us to obtain a dataset with more than 50 authors and the equivalent of about 110 Quixotes of text. The structure of the dataset, as you can see, is very simple and consists of only 4 fields: (Author, Work, Fragment and the Text in Greek). You can find the dataset in the "DATA" directory.
 
-From these data, we have applied a preliminary cleaning and we have separated the training subset from the validation subset.
+From these data, we have applied a preliminary cleaning and we have separated the training subset from the validation subset. You can find the code in the "
