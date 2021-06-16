@@ -1,6 +1,6 @@
 # KalokagathIA
 
-<img src="kalokagathia_webapp/static/images/dark_logo/Kalokagathia_banner_fondoscuro.png">
+<img src="kalokagathia_webapp/static/images/light_logo/kalokagathia_banner_light.png">
 
 This repository holds the information of the project KalokagathIA, which is part of 4th Edition of Saturdays4AI Madrid.
 
